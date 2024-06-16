@@ -1,0 +1,40 @@
+name: Run Full Test Suite for Accounts & Transactions
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out the repo code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+      
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run transactions tests
+        id: transactions_tests
+        run: |
+          cd payments
+          python3 manage.py test transactions_api.tests 
+
+      - name: Run accounts tests
+        if: ${{ failure() && steps.transactions_tests.conclusion == 'success'}}
+        run: |
+          cd payments
+          python3 manage.py test accounts_api.tests     
+
+
+
