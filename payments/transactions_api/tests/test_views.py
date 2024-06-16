@@ -58,6 +58,7 @@ class TestTransactionListView(TransactionBaseAPITestCase):
     def test_transaction_create_successful_view(self):
         """Tests authenticated POST request is successful"""
         data = {
+            "transaction_type": "CREDIT",
             "credit_from": 1,
             "debit_to": 2,
             "amount": 12500.00,
