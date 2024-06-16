@@ -31,7 +31,7 @@ jobs:
           python3 manage.py test transactions_api.tests 
 
       - name: Run accounts tests
-        if: ${{ failure() && steps.transactions_tests.conclusion == 'success'}}
+        if: ${{ success() && steps.transactions_tests.conclusion == 'success'}}
         run: |
           cd payments
           python3 manage.py test accounts_api.tests     
